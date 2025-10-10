@@ -1,47 +1,42 @@
 <?php
 require_once 'includes/auth_check.php';
 require_once 'db.php';
+require_once 'includes/helpers.php';
 
 $error = '';
 $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $title = trim($_POST['title'] ?? '');
-    $description = trim($_POST['description'] ?? '');
-    $event_date = $_POST['event_date'] ?? '';
-    
-    if (empty($title) || empty($description) || empty($event_date)) {
-        $error = 'Please fill in all required fields.';
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        $error = 'Invalid request. Please try again.';
     } else {
-        $image_path = null;
+        $title = trim($_POST['title'] ?? '');
+        $description = trim($_POST['description'] ?? '');
+        $event_date = $_POST['event_date'] ?? '';
         
-        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-            $file_type = $_FILES['image']['type'];
+        if (empty($title) || empty($description) || empty($event_date)) {
+            $error = 'Please fill in all required fields.';
+        } else {
+            $image_path = null;
             
-            if (in_array($file_type, $allowed_types)) {
-                $file_extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-                $new_filename = uniqid() . '.' . $file_extension;
-                $upload_path = 'uploads/' . $new_filename;
-                
-                if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_path)) {
-                    $image_path = '/' . $upload_path;
+            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                $upload_result = validate_and_upload_image($_FILES['image']);
+                if ($upload_result['success']) {
+                    $image_path = $upload_result['path'];
                 } else {
-                    $error = 'Failed to upload image.';
+                    $error = $upload_result['error'];
                 }
-            } else {
-                $error = 'Invalid image type. Only JPEG, PNG, GIF, and WebP are allowed.';
             }
-        }
-        
-        if (!$error) {
-            $stmt = $pdo->prepare("INSERT INTO news (title, description, image, event_date, created_by) VALUES (?, ?, ?, ?, ?)");
-            if ($stmt->execute([$title, $description, $image_path, $event_date, $_SESSION['user_id']])) {
-                $success = 'News posted successfully!';
-                header('Location: dashboard.php');
-                exit();
-            } else {
-                $error = 'Failed to post news. Please try again.';
+            
+            if (!$error) {
+                $stmt = $pdo->prepare("INSERT INTO news (title, description, image, event_date, created_by) VALUES (?, ?, ?, ?, ?)");
+                if ($stmt->execute([$title, $description, $image_path, $event_date, $_SESSION['user_id']])) {
+                    $success = 'News posted successfully!';
+                    header('Location: dashboard.php');
+                    exit();
+                } else {
+                    $error = 'Failed to post news. Please try again.';
+                }
             }
         }
     }
@@ -62,6 +57,7 @@ include 'includes/header.php';
         <?php endif; ?>
         
         <form method="POST" action="add_news.php" enctype="multipart/form-data" class="news-form">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(generate_csrf_token()); ?>">
             <div class="form-group">
                 <label for="title">Title *</label>
                 <input type="text" id="title" name="title" required value="<?php echo htmlspecialchars($_POST['title'] ?? ''); ?>">

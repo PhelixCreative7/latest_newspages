@@ -1,6 +1,7 @@
 <?php
 require_once 'includes/auth_check.php';
 require_once 'db.php';
+require_once 'includes/helpers.php';
 
 $stmt = $pdo->prepare("
     SELECT n.*, u.full_name as author_name 
@@ -45,7 +46,11 @@ include 'includes/header.php';
                                 <td><?php echo date('M j, Y', strtotime($item['created_at'])); ?></td>
                                 <td class="actions">
                                     <a href="edit_news.php?id=<?php echo $item['id']; ?>" class="btn btn-small btn-secondary">Edit</a>
-                                    <a href="delete_news.php?id=<?php echo $item['id']; ?>" class="btn btn-small btn-danger" onclick="return confirm('Are you sure you want to delete this news?');">Delete</a>
+                                    <form method="POST" action="delete_news.php" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this news?');">
+                                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(generate_csrf_token()); ?>">
+                                        <input type="hidden" name="id" value="<?php echo $item['id']; ?>">
+                                        <button type="submit" class="btn btn-small btn-danger">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

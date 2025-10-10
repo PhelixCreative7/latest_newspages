@@ -1,8 +1,19 @@
 <?php
 require_once 'includes/auth_check.php';
 require_once 'db.php';
+require_once 'includes/helpers.php';
 
-$news_id = $_GET['id'] ?? null;
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: dashboard.php');
+    exit();
+}
+
+if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+    header('Location: dashboard.php');
+    exit();
+}
+
+$news_id = $_POST['id'] ?? null;
 
 if (!$news_id) {
     header('Location: dashboard.php');
@@ -18,9 +29,7 @@ if (!$news) {
     exit();
 }
 
-if ($news['image'] && file_exists(ltrim($news['image'], '/'))) {
-    unlink(ltrim($news['image'], '/'));
-}
+safe_delete_file($news['image']);
 
 $stmt = $pdo->prepare("DELETE FROM news WHERE id = ? AND created_by = ?");
 $stmt->execute([$news_id, $_SESSION['user_id']]);
