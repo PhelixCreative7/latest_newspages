@@ -47,7 +47,7 @@ include 'includes/header.php';
                                 <td class="actions">
                                     <a href="edit_news.php?id=<?php echo $item['id']; ?>" class="btn btn-small btn-secondary">Edit</a>
                                     <form method="POST" action="delete_news.php" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this news?');">
-                                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(generate_csrf_token()); ?>">
+                                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(get_csrf_token()); ?>">
                                         <input type="hidden" name="id" value="<?php echo $item['id']; ?>">
                                         <button type="submit" class="btn btn-small btn-danger">Delete</button>
                                     </form>

@@ -1,15 +1,17 @@
 <?php
 
-function generate_csrf_token() {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-    return $_SESSION['csrf_token'];
+function get_csrf_token() {
+    if (!isset($_SESSION['csrf_token_current'])) {
+        $_SESSION['csrf_token_current'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['csrf_token_current'];
 }
 
 function verify_csrf_token($token) {
-    if (!isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $token)) {
+    if (!isset($_SESSION['csrf_token_current']) || !hash_equals($_SESSION['csrf_token_current'], $token)) {
         return false;
     }
-    unset($_SESSION['csrf_token']);
+    unset($_SESSION['csrf_token_current']);
     return true;
 }
 

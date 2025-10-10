@@ -57,7 +57,7 @@ include 'includes/header.php';
         <?php endif; ?>
         
         <form method="POST" action="add_news.php" enctype="multipart/form-data" class="news-form">
-            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(generate_csrf_token()); ?>">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(get_csrf_token()); ?>">
             <div class="form-group">
                 <label for="title">Title *</label>
                 <input type="text" id="title" name="title" required value="<?php echo htmlspecialchars($_POST['title'] ?? ''); ?>">
