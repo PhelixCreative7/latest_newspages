@@ -1,0 +1,14 @@
+RewriteEngine On
+RewriteBase /
+
+# Allow access to uploaded files
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^uploads/(.*)$ uploads/$1 [L]
+
+# Allow access to CSS files
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^css/(.*)$ css/$1 [L]
+
+# Allow direct access to existing PHP files
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^(.*)$ $1 [L]
