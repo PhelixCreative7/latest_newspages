@@ -13,12 +13,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $title = trim($_POST['title'] ?? '');
         $description = trim($_POST['description'] ?? '');
         $event_date = $_POST['event_date'] ?? '';
-        
+
         if (empty($title) || empty($description) || empty($event_date)) {
             $error = 'Please fill in all required fields.';
         } else {
             $image_path = null;
-            
+
             if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
                 $upload_result = validate_and_upload_image($_FILES['image']);
                 if ($upload_result['success']) {
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $error = $upload_result['error'];
                 }
             }
-            
+
             if (!$error) {
                 $stmt = $pdo->prepare("INSERT INTO news (title, description, image, event_date, created_by) VALUES (?, ?, ?, ?, ?)");
                 if ($stmt->execute([$title, $description, $image_path, $event_date, $_SESSION['user_id']])) {

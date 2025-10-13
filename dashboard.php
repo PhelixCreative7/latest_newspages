@@ -19,7 +19,7 @@ include 'includes/header.php';
 
 <div class="container">
     <div class="dashboard-header">
-        <h1>Welcome, <?php echo htmlspecialchars($_SESSION['full_name']); ?>!</h1>
+        <h1>Welcome, <?php echo htmlspecialchars($_SESSION['full_name'] ?? 'Admin'); ?>!</h1>
         <a href="add_news.php" class="btn btn-primary">➕ Add New News</a>
     </div>
 

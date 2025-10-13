@@ -28,9 +28,10 @@ include 'includes/header.php';
         <?php else: ?>
             <?php foreach ($news as $item): ?>
                 <div class="news-card">
-                    <?php if ($item['image']): ?>
+                    <?php if (!empty($item['image']) && file_exists('uploads/' . $item['image'])): ?>
                         <div class="news-image">
-                            <img src="<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['title']); ?>">
+                            <img src="uploads/<?php echo htmlspecialchars($item['image']); ?>" 
+                                 alt="<?php echo htmlspecialchars($item['title']); ?>">
                         </div>
                     <?php endif; ?>
                     <div class="news-content">
