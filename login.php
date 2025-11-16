@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Please enter both username and password.';
     } else {
         // Query using full_name as username
-        $stmt = $pdo->prepare("SELECT id, full_name, password FROM users WHERE full_name = ?");
+        $stmt = $pdo->prepare("SELECT id, full_name, password FROM latestnewsusers WHERE full_name = ?");
         $stmt->execute([$username]);
         $user = $stmt->fetch();
 
@@ -53,13 +53,13 @@ include 'includes/header.php';
             </div>
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
-        <p class="login-hint">
+        <!-- <p class="login-hint">
             Default admin users:<br>
             <strong>admin1</strong> | password1<br>
             <strong>admin2</strong> | password2<br>
             <strong>admin3</strong> | password3<br>
             <strong>admin4</strong> | password4
-        </p>
+        </p> -->
     </div>
 </div>
 

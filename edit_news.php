@@ -12,7 +12,7 @@ if (!$news_id) {
     exit();
 }
 
-$stmt = $pdo->prepare("SELECT * FROM news WHERE id = ? AND created_by = ?");
+$stmt = $pdo->prepare("SELECT * FROM latestnews WHERE id = ? AND created_by = ?");
 $stmt->execute([$news_id, $_SESSION['user_id']]);
 $news = $stmt->fetch();
 
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             
             if (!$error) {
-                $stmt = $pdo->prepare("UPDATE news SET title = ?, description = ?, image = ?, event_date = ? WHERE id = ? AND created_by = ?");
+                $stmt = $pdo->prepare("UPDATE latestnews SET title = ?, description = ?, image = ?, event_date = ? WHERE id = ? AND created_by = ?");
                 if ($stmt->execute([$title, $description, $image_path, $event_date, $news_id, $_SESSION['user_id']])) {
                     $success = 'News updated successfully!';
                     header('Location: dashboard.php');

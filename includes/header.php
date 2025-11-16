@@ -153,7 +153,7 @@
   <nav class="navbar">
     <div class="container">
       <a href="<?php echo dirname($_SERVER['SCRIPT_NAME']); ?>/index.php" class="logo-section">
-        <img src="<?php echo dirname($_SERVER['SCRIPT_NAME']); ?>/uploads/sk_college_logo.png" alt="College Logo" class="college-logo">
+        <img src="<?php echo dirname($_SERVER['SCRIPT_NAME']); ?>/Assets/sk_college_logo.png" alt="College Logo" class="college-logo">
         <span class="college-name">SK College of Science and Commerce</span>
       </a>
       <ul class="nav-links">
@@ -169,23 +169,7 @@
   </nav>
 
   <!-- Secondary Navbar -->
-  <nav class="secondary-navbar">
-    <div class="nav-container">
-      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-      <div class="nav-items" id="secondaryNav">
-        <a href="#home" class="active">Home</a>
-        <a href="#about">About</a>
-        <a href="#academics">Academics</a>
-        <a href="#faculty">Faculty</a>
-        <a href="#students">Students</a>
-        <a href="#iqac">IQAC & NAAC</a>
-        <a href="#alumni">Alumni</a>
-        <a href="#feedback">Feedback</a>
-        <a href="#assurance">Self Assurance</a>
-        <a href="#contact">Contact Us</a>
-      </div>
-    </div>
-  </nav>
+  
 
   <script>
     function toggleMenu() {

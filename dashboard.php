@@ -5,8 +5,8 @@ require_once 'includes/helpers.php';
 
 $stmt = $pdo->prepare("
     SELECT n.*, u.full_name as author_name 
-    FROM news n 
-    LEFT JOIN users u ON n.created_by = u.id 
+    FROM latestnews n 
+    LEFT JOIN latestnewsusers u ON n.created_by = u.id 
     WHERE n.created_by = ?
     ORDER BY n.created_at DESC
 ");

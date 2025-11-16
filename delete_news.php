@@ -20,7 +20,7 @@ if (!$news_id) {
     exit();
 }
 
-$stmt = $pdo->prepare("SELECT * FROM news WHERE id = ? AND created_by = ?");
+$stmt = $pdo->prepare("SELECT * FROM latestnews WHERE id = ? AND created_by = ?");
 $stmt->execute([$news_id, $_SESSION['user_id']]);
 $news = $stmt->fetch();
 
@@ -31,7 +31,7 @@ if (!$news) {
 
 safe_delete_file($news['image']);
 
-$stmt = $pdo->prepare("DELETE FROM news WHERE id = ? AND created_by = ?");
+$stmt = $pdo->prepare("DELETE FROM latestnews WHERE id = ? AND created_by = ?");
 $stmt->execute([$news_id, $_SESSION['user_id']]);
 
 header('Location: dashboard.php');

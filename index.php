@@ -4,8 +4,8 @@ require_once 'db.php';
 
 $stmt = $pdo->query("
     SELECT n.*, u.full_name as author_name 
-    FROM news n 
-    LEFT JOIN users u ON n.created_by = u.id 
+    FROM latestnews n 
+    LEFT JOIN latestnewsusers u ON n.created_by = u.id 
     ORDER BY n.created_at DESC
 ");
 $news = $stmt->fetchAll();
@@ -50,5 +50,3 @@ include 'includes/header.php';
         <?php endif; ?>
     </div>
 </div>
-
-<?php include 'includes/footer.php'; ?>

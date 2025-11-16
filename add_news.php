@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             if (!$error) {
-                $stmt = $pdo->prepare("INSERT INTO news (title, description, image, event_date, created_by) VALUES (?, ?, ?, ?, ?)");
+                $stmt = $pdo->prepare("INSERT INTO latestnews (title, description, image, event_date, created_by) VALUES (?, ?, ?, ?, ?)");
                 if ($stmt->execute([$title, $description, $image_path, $event_date, $_SESSION['user_id']])) {
                     $success = 'News posted successfully!';
                     header('Location: dashboard.php');
